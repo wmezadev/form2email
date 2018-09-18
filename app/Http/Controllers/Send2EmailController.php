@@ -45,11 +45,13 @@ class Send2EmailController extends Controller
             'user_agent' => $request->header('user-agent')
         ]);
 
+        $when = now()->addMinutes(0.1);
+
         if(is_null($cc)){
-            Mail::to($email)->send(new SendDataForm($data));
+            Mail::to($email)->later($when, new SendDataForm($data));
         }
         else {
-            Mail::to($email)->cc($cc)->send(new SendDataForm($data));
+            Mail::to($email)->cc($cc)->later($when, new SendDataForm($data));
         }
         
         if(!is_null($url)){
