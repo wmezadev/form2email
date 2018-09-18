@@ -29,6 +29,7 @@ class SendDataForm extends Mailable
      */
     public function build()
     {
-        return $this->view('emails.default');
+        return $this->subject('Formulario de Contacto')
+                    ->view('emails.default');
     }
 }

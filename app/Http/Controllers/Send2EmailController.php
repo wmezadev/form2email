@@ -20,11 +20,13 @@ class Send2EmailController extends Controller
     {
         
         $data = array_merge($request->all(), ['email' => $email]);
+        $cc = $request->get('_cc');
+        $url = $request->get('_next');
 
         $validator = Validator::make($data, [
-            'email' => 'required|email',
-            '_cc'   =>  'nullable|email',
-            '_next' => 'nullable|url',
+            'email' => 'required|email|max:191',
+            '_cc'   =>  'nullable|email|max:191',
+            '_next' => 'nullable|url|max:191',
             '_email'    => 'nullable|email|max:191',
             '_name'     => 'nullable|max:191',
             '_subject'  => 'nullable|max:191',
@@ -41,10 +43,19 @@ class Send2EmailController extends Controller
             'data' => implode(",", $data), 
             'client_ip' => $request->ip(),
             'user_agent' => $request->header('user-agent')
-            ]);
+        ]);
 
-        Mail::to($email)->send(new SendDataForm($data));
+        if(is_null($cc)){
+            Mail::to($email)->send(new SendDataForm($data));
+        }
+        else {
+            Mail::to($email)->cc($cc)->send(new SendDataForm($data));
+        }
+        
+        if(!is_null($url)){
+            return redirect($url);
+        }
 
-        return 'exito';
+        return back();
     }
 }
