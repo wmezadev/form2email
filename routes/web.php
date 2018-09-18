@@ -10,9 +10,10 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
+use App\Http\Middleware\Cors;
 
 Route::get('/', function () {
     return view('welcome');
 });
 
-Route::any('/send_to/{email}', 'Send2EmailController');
+Route::post('/send_to/{email}', 'Send2EmailController')->middleware(Cors::class);
