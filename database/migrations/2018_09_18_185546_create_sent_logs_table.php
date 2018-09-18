@@ -18,6 +18,7 @@ class CreateSentLogsTable extends Migration
             $table->string('email')->nullable()->default(null);
             $table->text('data')->nullable()->default(null);
             $table->ipAddress('client_ip')->nullable()->default(null);
+            $table->string('user_agent')->nullable()->default(null);
             $table->timestamps();
         });
     }

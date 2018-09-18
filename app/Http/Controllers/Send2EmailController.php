@@ -33,12 +33,17 @@ class Send2EmailController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return 'error';
+            return 'Error en alguno de los campos';
         }
 
-        SentLog::create($data);
+        SentLog::create([
+            'email'=> $email, 
+            'data' => implode(",", $data), 
+            'client_ip' => $request->ip(),
+            'user_agent' => $request->header('user-agent')
+            ]);
 
-        Mail::to($email)->cc($data['_cc'])->send(new SendDataForm($data));
+        Mail::to($email)->send(new SendDataForm($data));
 
         return 'exito';
     }
