@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Validator;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\SendDataForm;
+use App\SentLog;
 
 class Send2EmailController extends Controller
 {
@@ -34,6 +35,8 @@ class Send2EmailController extends Controller
         if ($validator->fails()) {
             return 'error';
         }
+
+        SentLog::create($data);
 
         Mail::to($email)->cc($data['_cc'])->send(new SendDataForm($data));
 
