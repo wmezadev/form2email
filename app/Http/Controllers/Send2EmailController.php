@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Validator;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\SendDataForm;
 
 class Send2EmailController extends Controller
 {
@@ -20,7 +22,6 @@ class Send2EmailController extends Controller
 
         $validator = Validator::make($data, [
             'email' => 'required|email',
-            '_replyto' => 'nullable|email',
             '_cc'   =>  'nullable|email',
             '_next' => 'nullable|url',
             '_email'    => 'nullable|email|max:191',
@@ -34,6 +35,8 @@ class Send2EmailController extends Controller
             return 'error';
         }
 
-        return $data;
+        Mail::to($email)->cc($data['_cc'])->send(new SendDataForm($data));
+
+        return 'exito';
     }
 }
