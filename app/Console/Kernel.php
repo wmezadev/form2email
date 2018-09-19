@@ -12,7 +12,8 @@ class Kernel extends ConsoleKernel
      *
      * @var array
      */
-    protected $commands = [];
+    protected $commands = [
+    ];
 
     /**
      * Define the application's command schedule.
@@ -23,6 +24,6 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        $schedule->command('queue:work --tries=3')->everyMinute()->withoutOverlapping();
+        $schedule->command('queue:work --sleep=3 --tries=3')->everyFiveMinutes()->withoutOverlapping();
     }
 }

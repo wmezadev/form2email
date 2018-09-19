@@ -56,6 +56,6 @@ class Send2EmailController extends Controller
             return redirect($url);
         }
 
-        return back();
+        return 'OK';
     }
 }
